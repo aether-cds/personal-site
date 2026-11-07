@@ -223,14 +223,6 @@ export default function PhysicsField({
 
   useEffect(() => {
     stateRef.current.reducedMotion = reducedMotion;
-    if (reducedMotion) {
-      for (const dot of stateRef.current.dots) {
-        dot.dx = 0;
-        dot.dy = 0;
-        dot.vx = 0;
-        dot.vy = 0;
-      }
-    }
   }, [reducedMotion]);
 
   useEffect(() => {

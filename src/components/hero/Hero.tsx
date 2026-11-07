@@ -108,17 +108,14 @@ export default function Hero() {
   const [shuffleSignal, setShuffleSignal] = useState(0);
   const [namaste, setNamaste] = useState<{ id: number } | null>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const soundEnabled = soundOn && !reducedMotion;
   const time = useNepalTime(zone, lang);
   const gongKeyRef = useRef("");
   const namasteIdRef = useRef(0);
   const namasteTimerRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    if (reducedMotion) setSoundOn(false);
-  }, [reducedMotion]);
-
-  useEffect(() => {
-    if (!soundOn || !time.mounted) return;
+    if (!soundEnabled || !time.mounted) return;
     if (time.minuteValue !== 0 || time.secondValue > 1) return;
 
     const key = `${zone}-${time.hourValue}-${time.bs?.day ?? ""}`;
@@ -126,7 +123,7 @@ export default function Hero() {
     gongKeyRef.current = key;
     playGong();
   }, [
-    soundOn,
+    soundEnabled,
     time.mounted,
     time.minuteValue,
     time.secondValue,
@@ -158,7 +155,7 @@ export default function Hero() {
 
   const toggleSound = async () => {
     if (reducedMotion) return;
-    if (soundOn) {
+    if (soundEnabled) {
       setSoundOn(false);
       return;
     }
@@ -188,7 +185,7 @@ export default function Hero() {
       </h1>
 
       <PhysicsField
-        soundOn={soundOn}
+        soundOn={soundEnabled}
         reducedMotion={reducedMotion}
         shuffleSignal={shuffleSignal}
       />
@@ -321,19 +318,19 @@ export default function Hero() {
           type="button"
           className="round-btn sound-btn"
           onClick={toggleSound}
-          aria-pressed={soundOn}
-          aria-label={soundOn ? "Turn sound off" : "Turn sound on"}
+          aria-pressed={soundEnabled}
+          aria-label={soundEnabled ? "Turn sound off" : "Turn sound on"}
           disabled={reducedMotion}
           title={
             reducedMotion
               ? "Sound is disabled because reduced motion is on"
-              : soundOn
+              : soundEnabled
                 ? "Sound on"
                 : "Sound off"
           }
           data-cursor="grow"
         >
-          <SoundIcon on={soundOn} />
+          <SoundIcon on={soundEnabled} />
           <span className="sound-dots" aria-hidden="true">
             {Array.from({ length: 5 }, (_, index) => (
               <span key={index} />

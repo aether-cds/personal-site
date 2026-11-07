@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
     const finePointer = window.matchMedia("(pointer: fine)");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const shouldEnable = finePointer.matches && !reduceMotion.matches;
 
-    setEnabled(shouldEnable);
     if (!shouldEnable) return;
 
     document.body.classList.add("has-custom-cursor");
@@ -74,8 +72,6 @@ export default function CustomCursor() {
       window.cancelAnimationFrame(frame);
     };
   }, []);
-
-  if (!enabled) return null;
 
   return (
     <div ref={cursorRef} className="custom-cursor" aria-hidden="true">

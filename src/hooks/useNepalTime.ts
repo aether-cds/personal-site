@@ -50,9 +50,15 @@ export function useNepalTime(zone: TimeZoneMode, lang: Language): NepalTime {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    setNow(new Date());
-    const interval = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(interval);
+    const tick = () => setNow(new Date());
+    // Defer the first update out of the effect body so the initial paint is
+    // stable, then keep the clock ticking once a second.
+    const frame = window.requestAnimationFrame(tick);
+    const interval = window.setInterval(tick, 1000);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearInterval(interval);
+    };
   }, []);
 
   return useMemo(() => {
