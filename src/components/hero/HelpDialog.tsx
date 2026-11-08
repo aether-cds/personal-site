@@ -22,8 +22,8 @@ export default function HelpDialog({ open, onClose }: HelpDialogProps) {
           <h3>Resize &amp; nudge</h3>
           <p>
             Select a shape, then scroll over the play area or pinch with two
-            fingers to resize it. Use the arrow keys to nudge it a pixel at a
-            time, or hold <kbd>Shift</kbd> for bigger steps. Press{" "}
+            fingers to resize it. Use the arrow keys to nudge it in small
+            steps, or hold <kbd>Shift</kbd> for bigger steps. Press{" "}
             <kbd>Esc</kbd> or the shuffle button to rebuild the field.
           </p>
         </section>

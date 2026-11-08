@@ -40,6 +40,12 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
       event.preventDefault();
       lenis.scrollTo(destination, { offset: -6, duration: 1.15 });
+
+      // A skip link should move focus, not only scroll. `main` has tabIndex
+      // -1 so it can receive programmatic focus without joining the tab order.
+      if (hash === "#main" && destination instanceof HTMLElement) {
+        destination.focus({ preventScroll: true });
+      }
     };
 
     const onModal = (event: Event) => {

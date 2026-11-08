@@ -40,6 +40,12 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
     body.style.overflow = "hidden";
     closeRef.current?.focus();
 
+    // Tell the smooth-scroll controller (and anything else listening) that a
+    // modal is open. Lenis stops so the page behind the dialog stays put.
+    window.dispatchEvent(
+      new CustomEvent<boolean>("app:modal", { detail: true }),
+    );
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -72,6 +78,9 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
 
     return () => {
       document.removeEventListener("keydown", onKeyDown, true);
+      window.dispatchEvent(
+        new CustomEvent<boolean>("app:modal", { detail: false }),
+      );
       html.style.overflow = previousHtmlOverflow;
       body.style.overflow = previousBodyOverflow;
       previous?.focus();

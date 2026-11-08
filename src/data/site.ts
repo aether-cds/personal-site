@@ -1,11 +1,12 @@
 /**
  * Single source of truth for identity details.
- * TODO(Syami): update the role, email, socials and coordinates below.
+ * TODO(Syami): update the role, URL, email, socials and coordinates below.
  */
 export const site = {
   name: "Syami",
   initial: "S.",
   role: "Creative Developer",
+  url: "https://syami.dev",
   location: "Kathmandu, Nepal",
   coordinates: "27.7172° N, 85.3240° E",
   timezone: "NPT UTC+5:45",
@@ -14,6 +15,7 @@ export const site = {
   intro:
     "I build expressive, tactile interfaces at the meeting point of design and engineering. Born in the Himalayas, working from Kathmandu, and happiest when a website feels like a place you can touch.",
   nepalLine: "Made in Nepal, between the mountains and the monsoon.",
+  nepalLineNe: "हिमाल र मनसुनको बीचमा, काठमाडौंबाट।",
   skills: [
     "React",
     "Next.js",

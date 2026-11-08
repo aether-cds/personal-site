@@ -11,6 +11,13 @@ type OrbClockProps = {
 
 const TICKS = Array.from({ length: 12 }, (_, index) => index);
 
+/**
+ * Trigonometry can differ by one floating-point step between the server and
+ * browser engines. Rendering coordinates through a fixed precision keeps the
+ * generated SVG identical on both sides of hydration.
+ */
+const fixed = (value: number) => value.toFixed(3);
+
 function rotateHand(element: SVGGElement | null, degrees: number) {
   element?.setAttribute("transform", `rotate(${degrees} 100 100)`);
 }
@@ -86,28 +93,30 @@ export default function OrbClock({ zone, reducedMotion }: OrbClockProps) {
             {Array.from({ length: 36 }, (_, index) => {
               const angle = (index / 36) * Math.PI * 2;
               const inner = index % 3 === 0 ? 132 : 150;
+              const cos = Math.cos(angle);
+              const sin = Math.sin(angle);
               return (
                 <line
                   key={index}
-                  x1={200 + Math.cos(angle) * inner}
-                  y1={200 + Math.sin(angle) * inner}
-                  x2={200 + Math.cos(angle) * 168}
-                  y2={200 + Math.sin(angle) * 168}
+                  x1={fixed(200 + cos * inner)}
+                  y1={fixed(200 + sin * inner)}
+                  x2={fixed(200 + cos * 168)}
+                  y2={fixed(200 + sin * 168)}
                 />
               );
             })}
             {Array.from({ length: 8 }, (_, index) => {
               const angle = (index / 8) * Math.PI * 2;
+              const cx = fixed(200 + Math.cos(angle) * 92);
+              const cy = fixed(200 + Math.sin(angle) * 92);
               return (
                 <ellipse
                   key={index}
-                  cx={200 + Math.cos(angle) * 92}
-                  cy={200 + Math.sin(angle) * 92}
+                  cx={cx}
+                  cy={cy}
                   rx="20"
                   ry="8"
-                  transform={`rotate(${(angle * 180) / Math.PI} ${
-                    200 + Math.cos(angle) * 92
-                  } ${200 + Math.sin(angle) * 92})`}
+                  transform={`rotate(${fixed((angle * 180) / Math.PI)} ${cx} ${cy})`}
                 />
               );
             })}
@@ -122,13 +131,15 @@ export default function OrbClock({ zone, reducedMotion }: OrbClockProps) {
               const angle = (tick / 12) * Math.PI * 2;
               const inner = 86;
               const outer = tick % 3 === 0 ? 92 : 90;
+              const cos = Math.cos(angle);
+              const sin = Math.sin(angle);
               return (
                 <line
                   key={tick}
-                  x1={100 + Math.cos(angle) * inner}
-                  y1={100 + Math.sin(angle) * inner}
-                  x2={100 + Math.cos(angle) * outer}
-                  y2={100 + Math.sin(angle) * outer}
+                  x1={fixed(100 + cos * inner)}
+                  y1={fixed(100 + sin * inner)}
+                  x2={fixed(100 + cos * outer)}
+                  y2={fixed(100 + sin * outer)}
                 />
               );
             })}
@@ -153,7 +164,7 @@ export default function OrbClock({ zone, reducedMotion }: OrbClockProps) {
             cx="100"
             cy="100"
             r="3.2"
-            className="orb-hand orb-hand--second"
+            className="orb-center"
           />
         </svg>
 

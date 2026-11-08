@@ -595,10 +595,10 @@ export default function PhysicsField({
         aria-describedby="physics-instructions"
       />
       <p id="physics-instructions" className="sr-only">
-        This is a decorative physics playground. All objects are also
-        available as text through the rest of the page. Drag with a mouse or
-        finger. Press Escape to reshuffle. Sound is off by default and can be
-        enabled with the sound button.
+        This is a decorative physics playground. The clock values, navigation
+        and controls are available as text. Drag with a mouse or finger. Press
+        Escape to reshuffle. Sound is off by default and can be enabled with the
+        sound button.
       </p>
     </>
   );
